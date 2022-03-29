@@ -79,7 +79,9 @@ function! s:bettergrep_pre(grep_cmd) abort
       \ | call setqflist([], 'a', s:qf_attrs)
     autocmd QuickFixCmdPost lgetexpr lwindow
       \ | call setloclist(0, [], 'a', s:qf_attrs)
-    autocmd Filetype qf call s:apply_mappings()
+    if !get(g:, 'bettergrep_no_mappings', 0)
+      autocmd Filetype qf call s:apply_mappings()
+    endif
     autocmd Filetype qf setlocal foldexpr=getline(v:lnum)=~'^\|\|\ [^--]'?'1':'0'
     autocmd Filetype qf setlocal foldmethod=expr
     autocmd Filetype qf setlocal foldlevel=0
